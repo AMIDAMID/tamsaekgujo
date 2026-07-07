@@ -31,7 +31,7 @@ function changeBar(rate) {
 function stockRow(s, judeokSet, naverSet) {
   const marks =
     (judeokSet.has(s.code) ? "👑" : "") +
-    (naverSet.has(s.code) ? "📌" : "") +
+    (naverSet.has(s.code) ? '<span class="nver">N</span>' : "") +
     (s.isCap ? "🔴" : "") +
     ((s.tvEok || 0) >= 1000 ? "💰" : "");
   const url = `https://m.stock.naver.com/domestic/stock/${esc(s.code)}/total`;

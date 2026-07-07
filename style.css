@@ -37,7 +37,11 @@ main { padding: 12px; }
 .stk-top { display: flex; align-items: baseline; gap: 5px; }
 .stk-name { font-weight: 600; color: #1a1d22; text-decoration: none;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.marks { font-size: 11px; flex: none; }
+.marks { font-size: 11px; flex: none; display: inline-flex; align-items: center; gap: 2px; }
+.nver { display: inline-flex; align-items: center; justify-content: center;
+        width: 15px; height: 15px; border-radius: 50%; background: #03c75a;
+        color: #fff; font-size: 10px; font-weight: 800; line-height: 1;
+        font-family: Arial, sans-serif; }
 .stk-rate { font-weight: bold; white-space: nowrap; margin-left: auto; flex: none; }
 .stk-sub { display: flex; justify-content: space-between;
            color: #6b7280; font-size: 11px; margin-top: 1px; }
