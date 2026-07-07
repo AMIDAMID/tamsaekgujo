@@ -1,0 +1,34 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Malgun Gothic", system-ui, sans-serif;
+       background: #14161a; color: #e8e8e8; font-size: 14px; }
+header { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;
+         padding: 10px 14px; }
+h1 { font-size: 18px; margin: 0; }
+#meta { color: #9aa0a6; font-size: 12px; }
+.stale { color: #ffb300; font-weight: bold; }
+main { overflow-x: auto; padding: 0 8px 20px; }
+table { border-collapse: collapse; width: 100%; min-width: 760px; }
+th, td { padding: 6px 8px; text-align: right; border-bottom: 1px solid #2a2e35;
+         white-space: nowrap; }
+th.left, td.left { text-align: left; }
+tr.theme { cursor: pointer; }
+tr.theme:hover { background: #1d2128; }
+td.name { font-weight: bold; }
+td.score { color: #7ecbff; font-weight: bold; }
+.up { color: #ff5252; }      /* 국내 관례: 상승=빨강 */
+.down { color: #448aff; }
+.ldr { margin-right: 8px; }
+tr.detail { display: none; }
+tr.detail.open { display: table-row; background: #191c21; }
+tr.detail table { min-width: 0; }
+tr.stock td { border-bottom: 1px solid #22262c; font-size: 13px; }
+.sortbar { padding: 4px 8px; font-size: 12px; color: #9aa0a6; }
+.sortbtn { background: #262b33; color: #cfd3d8; border: 1px solid #363c45;
+           border-radius: 4px; padding: 2px 8px; margin-left: 4px; cursor: pointer;
+           font-size: 12px; }
+.sortbtn.on { background: #2f6ea5; color: #fff; border-color: #3d8bce; }
+a { color: inherit; text-decoration: none; border-bottom: 1px dotted #555; }
+#err { color: #ff8a80; padding: 8px 14px; }
+.hidden { display: none; }
+footer { color: #6b7178; font-size: 11px; padding: 10px 14px; }

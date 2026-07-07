@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>테마레이더</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>📡 테마레이더</h1>
+  <div id="meta">불러오는 중…</div>
+</header>
+<main>
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th>#</th><th class="left">테마</th><th>점수</th><th>등락</th>
+        <th>상승/보합/하락</th><th>대금(억)</th><th>연속</th>
+        <th class="left">네이버 주도주</th><th class="left">주덕 대장주</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p id="err" class="hidden"></p>
+</main>
+<footer>60초 자동 갱신 · 데이터: 네이버 금융 (지연·오류 가능) · 투자 판단 참고용</footer>
+<script src="app.js"></script>
+</body>
+</html>
