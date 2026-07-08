@@ -41,6 +41,8 @@ main { padding: 12px; }
 .stk-name { font-weight: 600; color: #1a1d22; text-decoration: none;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .marks { font-size: 11px; flex: none; display: inline-flex; align-items: center; gap: 2px; }
+.cap-mark { color: #e5342b; font-weight: 900; font-style: normal;
+            font-family: Arial, sans-serif; }  /* 상한가: 빨간 상승화살표 */
 .nver { display: inline-flex; align-items: center; justify-content: center;
         width: 15px; height: 15px; border-radius: 50%; background: #03c75a;
         color: #fff; font-size: 10px; font-weight: 800; line-height: 1;

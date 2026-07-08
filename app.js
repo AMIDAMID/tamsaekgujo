@@ -45,7 +45,7 @@ function stockRow(s, judeokSet, naverSet) {
   const marks =
     (judeokSet.has(s.code) ? "👑" : "") +
     (naverSet.has(s.code) ? '<span class="nver">N</span>' : "") +
-    (s.isCap ? "🔴" : "") +
+    (s.isCap ? '<span class="cap-mark">⬆︎</span>' : "") +
     ((s.tvEok || 0) >= 1000 ? "💰" : "");
   const url = `https://m.stock.naver.com/domestic/stock/${esc(s.code)}/total`;
   return `
@@ -77,7 +77,7 @@ function card(t, i) {
       <header class="card-h">
         <div class="card-title">
           <span class="rank">${i + 1}</span>
-          <span class="tname">${esc(t.name)}${t.capCount ? ` 🔴×${t.capCount}` : ""}</span>
+          <span class="tname">${esc(t.name)}${t.capCount ? ` <span class="cap-mark">⬆︎×${t.capCount}</span>` : ""}</span>
           ${aliasBadge}
         </div>
         <span class="tval">${fmtEok(t.tradingValueEok)}억</span>
