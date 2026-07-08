@@ -20,12 +20,29 @@ const fmtPrice = (v) => v == null ? "-" : v.toLocaleString("ko-KR");
 const sign = (v) => (v > 0 ? "+" : "");
 const cls = (v) => (v > 0 ? "up" : v < 0 ? "down" : "flat");
 
-// 등락률 → 중앙 기준 막대 (우측=상승 빨강 / 좌측=하락 파랑, ±30% 만점)
+// 등락률 → 중앙 기준 막대 (고저 없을 때 fallback)
 function changeBar(rate) {
   const pct = Math.max(-30, Math.min(30, rate || 0));
   const w = (Math.abs(pct) / 30) * 50;   // 0~50%
   const pos = pct >= 0 ? `left:50%;width:${w}%` : `right:50%;width:${w}%`;
   return `<div class="bar"><span class="bar-fill ${cls(rate)}" style="${pos}"></span></div>`;
+}
+
+// 캔들 막대: 가는 줄 = 오늘 고가~저가(윗꼬리/아랫꼬리), 굵은 몸통 = 전일종가→현재가
+function candleBar(s) {
+  const low = s.low, high = s.high, prev = s.prevClose, cur = s.price;
+  if (low == null || high == null || prev == null || high <= low) return changeBar(s.rate);
+  const lo = Math.min(low, prev), hi = Math.max(high, prev);
+  const span = (hi - lo) || 1;
+  const P = (x) => ((x - lo) / span) * 100;
+  const k = cur >= prev ? "up" : "down";
+  const wl = P(low), ww = P(high) - P(low);
+  const a = P(prev), b = P(cur);
+  const bl = Math.min(a, b), bw = Math.max(1.2, Math.abs(b - a));
+  return `<div class="cbar" title="고 ${fmtPrice(high)} / 저 ${fmtPrice(low)} / 전일 ${fmtPrice(prev)}">
+      <span class="wick ${k}" style="left:${wl}%;width:${ww}%"></span>
+      <span class="cbody ${k}" style="left:${bl}%;width:${bw}%"></span>
+    </div>`;
 }
 
 function stockRow(s, judeokSet, naverSet) {
@@ -46,7 +63,7 @@ function stockRow(s, judeokSet, naverSet) {
         <span>${fmtPrice(s.price)}</span>
         <span>${fmtEok(s.tvEok)}억</span>
       </div>
-      ${changeBar(s.rate)}
+      ${candleBar(s)}
     </li>`;
 }
 

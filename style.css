@@ -61,6 +61,13 @@ main { padding: 12px; }
 .bar-fill.down { background: #1d6fd6; }
 .bar-fill.flat { background: #c3c9d2; }
 
+/* 캔들: 가는 줄=고저 꼬리, 굵은 몸통=전일->현재 */
+.cbar { position: relative; height: 8px; margin-top: 4px; }
+.wick { position: absolute; top: 3.5px; height: 1px; border-radius: 1px; }
+.cbody { position: absolute; top: 1px; height: 6px; border-radius: 1px; min-width: 1px; }
+.wick.up, .cbody.up { background: #e5342b; }
+.wick.down, .cbody.down { background: #1d6fd6; }
+
 #err { color: #c0392b; padding: 8px 14px; }
 .hidden { display: none; }
 footer { color: #8a919b; font-size: 11px; padding: 10px 14px; text-align: center; }
