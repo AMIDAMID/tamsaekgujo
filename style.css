@@ -9,6 +9,12 @@ body { margin: 0; font-family: "Malgun Gothic", system-ui, sans-serif;
 h1 { font-size: 17px; margin: 0; }
 #meta { color: #6b7280; font-size: 12px; }
 .legend { color: #6b7280; font-size: 11px; }
+/* 범례 아이콘 크기 통일 (모두 15px 박스, 왕관은 비율 유지) */
+.legend .lead,
+.legend .nver,
+.legend .cap-mark { width: 15px; height: 15px; vertical-align: middle; }
+.legend .lead { object-fit: contain; }
+.legend .mm { font-size: 15px; line-height: 1; vertical-align: middle; }
 .stale { color: #d97706; font-weight: bold; }
 
 main { padding: 12px; }
