@@ -62,12 +62,14 @@ main { padding: 12px; }
 .bar-fill.down { background: #1d6fd6; }
 .bar-fill.flat { background: #c3c9d2; }
 
-/* 캔들(마켓중심 방식): 가는 검정 범위선=고저 꼬리, 굵은 몸통=전일->현재 */
+/* 캔들: 가는 색 줄=고저 꼬리, 굵은 몸통=시가->현재, 검정 세로줄=시가(양봉/음봉 기준) */
 .cbar { position: relative; height: 11px; margin-top: 4px; }
-.wick { position: absolute; top: 5px; height: 1.5px; background: #2b2e33; }
-.cbody { position: absolute; top: 1px; height: 9px; border-radius: 1px; min-width: 2px; }
-.cbody.up { background: #e5342b; }
-.cbody.down { background: #1d6fd6; }
+.wick { position: absolute; top: 5px; height: 1.5px; border-radius: 1px; }
+.cbody { position: absolute; top: 1.5px; height: 8px; border-radius: 1px; min-width: 2px; }
+.wick.up, .cbody.up { background: #e5342b; }
+.wick.down, .cbody.down { background: #1d6fd6; }
+.oline { position: absolute; top: 0; height: 11px; width: 2px; background: #1a1d22;
+         transform: translateX(-50%); }
 
 /* 상한가 종목 행 강조 (사진의 노란 배경) */
 .stk.cap { background: #fff6c8; }

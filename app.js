@@ -28,20 +28,24 @@ function changeBar(rate) {
   return `<div class="bar"><span class="bar-fill ${cls(rate)}" style="${pos}"></span></div>`;
 }
 
-// 캔들 막대: 가는 줄 = 오늘 고가~저가(윗꼬리/아랫꼬리), 굵은 몸통 = 전일종가→현재가
+// 캔들 막대: 가는 색 줄 = 오늘 고가~저가(윗/아랫꼬리), 굵은 몸통 = 시가→현재가,
+// 검정 세로줄 = 시가 (이 선 기준 오른쪽 몸통=양봉/빨강, 왼쪽=음봉/파랑)
 function candleBar(s) {
-  const low = s.low, high = s.high, prev = s.prevClose, cur = s.price;
-  if (low == null || high == null || prev == null || high <= low) return changeBar(s.rate);
-  const lo = Math.min(low, prev), hi = Math.max(high, prev);
+  const low = s.low, high = s.high, cur = s.price;
+  const ref = s.open != null ? s.open : s.prevClose;   // 기준선: 시가(없으면 전일종가)
+  if (low == null || high == null || ref == null || high <= low) return changeBar(s.rate);
+  const lo = Math.min(low, ref), hi = Math.max(high, ref);
   const span = (hi - lo) || 1;
-  const P = (x) => ((x - lo) / span) * 100;
-  const k = cur >= prev ? "up" : "down";
+  const P = (x) => Math.max(0, Math.min(100, ((x - lo) / span) * 100));
+  const k = cur >= ref ? "up" : "down";               // 양봉/음봉 = 시가 대비
   const wl = P(low), ww = P(high) - P(low);
-  const a = P(prev), b = P(cur);
-  const bl = Math.min(a, b), bw = Math.max(1.2, Math.abs(b - a));
-  return `<div class="cbar" title="고 ${fmtPrice(high)} / 저 ${fmtPrice(low)} / 전일 ${fmtPrice(prev)}">
-      <span class="wick" style="left:${wl}%;width:${ww}%"></span>
+  const a = P(ref), b = P(cur);
+  const bl = Math.min(a, b), bw = Math.max(1.5, Math.abs(b - a));
+  const tip = `시 ${fmtPrice(ref)} / 고 ${fmtPrice(high)} / 저 ${fmtPrice(low)} / 현재 ${fmtPrice(cur)}`;
+  return `<div class="cbar" title="${tip}">
+      <span class="wick ${k}" style="left:${wl}%;width:${ww}%"></span>
       <span class="cbody ${k}" style="left:${bl}%;width:${bw}%"></span>
+      <span class="oline" style="left:${a}%"></span>
     </div>`;
 }
 
