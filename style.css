@@ -34,7 +34,7 @@ main { padding: 12px; }
 .breadth { color: #6b7280; margin-left: auto; font-size: 11px; white-space: nowrap; }
 
 .stk-list { list-style: none; margin: 0; padding: 3px 0; }
-.stk { padding: 5px 10px; border-top: 1px solid #f2f4f7; }
+.stk { padding: 5px 10px; border-top: 1px solid #f2f4f7; font-size: 15px; }  /* 종목 글자 +2pt */
 .stk:first-child { border-top: none; }
 .stk-top { display: flex; align-items: baseline; gap: 5px; }
 .stk-name { font-weight: 600; color: #1a1d22; text-decoration: none;
@@ -46,7 +46,7 @@ main { padding: 12px; }
         font-family: Arial, sans-serif; }
 .stk-rate { font-weight: bold; white-space: nowrap; margin-left: auto; flex: none; }
 .stk-sub { display: flex; justify-content: space-between;
-           color: #6b7280; font-size: 11px; margin-top: 1px; }
+           color: #6b7280; font-size: 13px; margin-top: 1px; }  /* +2pt */
 
 .up { color: #e5342b; }     /* 국내 관례: 상승 = 빨강 */
 .down { color: #1d6fd6; }   /* 하락 = 파랑 */

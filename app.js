@@ -1,7 +1,7 @@
 "use strict";
 const REFRESH_MS = 60000;
 const STALE_MIN = 5;
-const MAX_STOCKS = 5;   // 테마당 표시 종목 수 (등락률 상위)
+const MAX_STOCKS = 4;   // 테마당 표시 종목 수 (등락률 상위)
 
 function dataUrl() {
   const h = location.hostname;
