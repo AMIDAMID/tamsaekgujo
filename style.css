@@ -44,10 +44,7 @@ main { padding: 12px; }
 .lead { height: 16px; width: auto; vertical-align: middle; }  /* 대대장 왕관 엠블럼 */
 .cap-mark { vertical-align: -1px; }             /* 상한가: 빨강 SVG 상승화살표 */
 .capx { color: #e5342b; font-weight: 900; }     /* 테마명 옆 상한 개수 ×N (빨강) */
-.nver { display: inline-flex; align-items: center; justify-content: center;
-        width: 15px; height: 15px; border-radius: 50%; background: #03c75a;
-        color: #fff; font-size: 10px; font-weight: 800; line-height: 1;
-        font-family: Arial, sans-serif; }
+.nver { vertical-align: middle; }   /* 네이버 SVG 배지 (원·N 모두 벡터, 위치 항상 동일) */
 .stk-rate { font-weight: bold; white-space: nowrap; margin-left: auto; flex: none; }
 .stk-sub { display: flex; justify-content: space-between;
            color: #6b7280; font-size: 13px; margin-top: 1px; }  /* +2pt */

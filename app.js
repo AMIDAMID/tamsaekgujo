@@ -23,6 +23,8 @@ const cls = (v) => (v > 0 ? "up" : v < 0 ? "down" : "flat");
 const CAP = '<svg class="cap-mark" viewBox="0 0 12 12" width="11" height="11" aria-label="상한"><path d="M6 1 10 6 7.6 6 7.6 11 4.4 11 4.4 6 2 6Z" fill="#e5342b"/></svg>';
 // 대대장: 사용자 제공 왕관 엠블럼 (파일 참조)
 const LEAD = '<img class="lead" src="daedaejang.svg?v=15" alt="대대장">';
+// 네이버 주도주: SVG 배지 (글자 렌더 대신 벡터 → 모든 배지 N 위치 동일)
+const NB = '<svg class="nver" viewBox="0 0 20 20" width="15" height="15" aria-label="네이버"><circle cx="10" cy="10" r="10" fill="#03c75a"/><text x="10" y="15.3" text-anchor="middle" fill="#fff" font-size="13.5" font-weight="800" font-family="Arial,Helvetica,sans-serif">N</text></svg>';
 
 // 일봉 표시(최초 그림): 중앙 검정 세로줄 기준 등락률 막대 — 오른쪽 빨강=양봉, 왼쪽 파랑=음봉 (±30% 만점)
 // 가는 선 = 오늘 고가~저가 범위(같은 % 눈금, 상승/하락 색) — 굵은 막대 밖으로 나온 부분이 윗/아랫꼬리
@@ -48,7 +50,7 @@ function changeBar(s) {
 function stockRow(s, judeokSet, naverSet) {
   const marks =
     (judeokSet.has(s.code) ? LEAD : "") +
-    (naverSet.has(s.code) ? '<span class="nver">N</span>' : "") +
+    (naverSet.has(s.code) ? NB : "") +
     (s.isCap ? CAP : "") +
     ((s.tvEok || 0) >= 1000 ? "💰" : "");
   const url = `https://m.stock.naver.com/domestic/stock/${esc(s.code)}/total`;
