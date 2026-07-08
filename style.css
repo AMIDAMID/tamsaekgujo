@@ -37,10 +37,11 @@ main { padding: 12px; }
 .stk-list { list-style: none; margin: 0; padding: 3px 0; }
 .stk { padding: 5px 10px; border-top: 1px solid #f2f4f7; font-size: 15px; }  /* 종목 글자 +2pt */
 .stk:first-child { border-top: none; }
-.stk-top { display: flex; align-items: baseline; gap: 5px; }
+.stk-top { display: flex; align-items: center; gap: 5px; }  /* center: N배지 등 마크 세로 통일 */
 .stk-name { font-weight: 600; color: #1a1d22; text-decoration: none;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .marks { font-size: 11px; flex: none; display: inline-flex; align-items: center; gap: 2px; }
+.lead { height: 16px; width: auto; vertical-align: middle; }  /* 대대장 왕관 엠블럼 */
 .cap-mark { vertical-align: -1px; }             /* 상한가: 빨강 SVG 상승화살표 */
 .capx { color: #e5342b; font-weight: 900; }     /* 테마명 옆 상한 개수 ×N (빨강) */
 .nver { display: inline-flex; align-items: center; justify-content: center;

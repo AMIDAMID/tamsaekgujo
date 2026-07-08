@@ -21,6 +21,8 @@ const sign = (v) => (v > 0 ? "+" : "");
 const cls = (v) => (v > 0 ? "up" : v < 0 ? "down" : "flat");
 // 상한가: 빨강 채움 SVG 상승화살표 (이모지 폰트가 색을 무시하는 문제 회피)
 const CAP = '<svg class="cap-mark" viewBox="0 0 12 12" width="11" height="11" aria-label="상한"><path d="M6 1 10 6 7.6 6 7.6 11 4.4 11 4.4 6 2 6Z" fill="#e5342b"/></svg>';
+// 대대장: 사용자 제공 왕관 엠블럼 (파일 참조)
+const LEAD = '<img class="lead" src="daedaejang.svg?v=15" alt="대대장">';
 
 // 일봉 표시(최초 그림): 중앙 검정 세로줄 기준 등락률 막대 — 오른쪽 빨강=양봉, 왼쪽 파랑=음봉 (±30% 만점)
 // 가는 선 = 오늘 고가~저가 범위(같은 % 눈금, 상승/하락 색) — 굵은 막대 밖으로 나온 부분이 윗/아랫꼬리
@@ -45,7 +47,7 @@ function changeBar(s) {
 
 function stockRow(s, judeokSet, naverSet) {
   const marks =
-    (judeokSet.has(s.code) ? "👑" : "") +
+    (judeokSet.has(s.code) ? LEAD : "") +
     (naverSet.has(s.code) ? '<span class="nver">N</span>' : "") +
     (s.isCap ? CAP : "") +
     ((s.tvEok || 0) >= 1000 ? "💰" : "");
