@@ -7,7 +7,19 @@ body { margin: 0; font-family: "Malgun Gothic", system-ui, sans-serif;
        border-bottom: 1px solid #dde1e7; position: sticky; top: 0; z-index: 5; }
 .top-l { display: flex; align-items: baseline; gap: 10px; }
 h1 { font-size: 17px; margin: 0; display: flex; align-items: center; gap: 6px; }
-.logo { flex: none; }   /* 빨간 헬리콥터 로고 */
+.logo { flex: none; transform-origin: 50% 62%;
+        animation: heliFly 2.4s ease-in-out infinite; }              /* 호버·뱅킹 */
+.rotor { transform-box: fill-box; transform-origin: center;
+         animation: rotorSpin 0.6s linear infinite; }               /* 메인로터 회전(측면 스윕) */
+.trotor { transform-box: fill-box; transform-origin: center;
+          animation: tailSpin 0.28s linear infinite; }              /* 꼬리로터 회전 */
+@keyframes heliFly { 0%,100% { transform: translateY(0) rotate(-2.5deg); }
+                     50% { transform: translateY(-1.8px) rotate(1.5deg); } }
+@keyframes rotorSpin { to { transform: rotateY(360deg); } }
+@keyframes tailSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .logo, .rotor, .trotor { animation: none; }
+}
 #meta { color: #6b7280; font-size: 12px; }
 .legend { color: #6b7280; font-size: 11px; }
 /* 범례 아이콘 크기 통일 (모두 15px 박스, 왕관은 비율 유지) */
