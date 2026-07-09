@@ -104,7 +104,7 @@ function render(d) {
   const stale = ageMin > STALE_MIN ? ` <span class="stale">⚠ ${ageMin}분 전 데이터</span>` : "";
   const errs = d.status && !d.status.ok
     ? ` <span class="stale">⚠ 수집 오류 ${d.status.errors.length}건</span>` : "";
-  meta.innerHTML = `${upd.toLocaleTimeString("ko-KR")} 기준 · ${esc(d.marketStatus)}${stale}${errs}`;
+  meta.innerHTML = `${upd.toLocaleTimeString("ko-KR", {hour12: false})} 기준 · ${esc(d.marketStatus)}${stale}${errs}`;
   document.getElementById("cards").innerHTML = d.themes.map((t, i) => card(t, i)).join("");
 }
 
