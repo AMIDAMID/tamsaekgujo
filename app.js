@@ -165,7 +165,7 @@ function renderTicker(d) {
   track.innerHTML = `<span class="tk-copy">${one}</span><span class="tk-copy">${one}</span>`;
   box.classList.remove("hidden");
   const half = track.scrollWidth / 2;               // 한 벌 길이(px)
-  track.style.animationDuration = `${Math.max(30, Math.round(half / 80))}s`;
+  track.style.animationDuration = `${Math.max(30, Math.round(half / 75))}s`;
 }
 
 function render(d) {
