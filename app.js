@@ -47,14 +47,16 @@ function changeBar(s) {
   return `<div class="bar"${tip}>${range}<span class="bar-fill ${cls(rate)}" style="${pos}"></span></div>`;
 }
 
-// 확장 세션 시세 줄. 실측(2026-07-10): 이 데이터는 NXT 전용 — NXT 미상장 종목엔 값이 없고
-// KRX 시간외단일가는 이 API에 없음. AFTER_MARKET = NXT 애프터마켓 → NXT(보라) 스티커.
-// (혹시 OVER_TIME/SINGLE류 세션값이 오면 시간외(주황)로 표기 — 방어용)
+// NXT 시세 줄 (네이버 over 데이터 = NXT 전용, 실측 2026-07-10) — 보라 NXT 스티커
 function extLine(nxt) {
   if (!nxt) return "";
-  const isOt = /OVER_?TIME|SINGLE/i.test(nxt.session || "");
-  const tag = isOt ? '<span class="ot-tag">시간외</span>' : '<span class="nxt-tag">NXT</span>';
-  return `<div class="stk-nxt">${tag} ${fmtPrice(nxt.price)} <span class="${cls(nxt.rate)}">${sign(nxt.rate)}${(nxt.rate || 0).toFixed(2)}%</span></div>`;
+  return `<div class="stk-nxt"><span class="nxt-tag">NXT</span> ${fmtPrice(nxt.price)} <span class="${cls(nxt.rate)}">${sign(nxt.rate)}${(nxt.rate || 0).toFixed(2)}%</span></div>`;
+}
+
+// 시간외단일가 줄 (다음 금융, 16~18시) — 주황 시간외 스티커. 등락 기준은 정규장 종가 대비.
+function otLine(ot) {
+  if (!ot) return "";
+  return `<div class="stk-nxt"><span class="ot-tag">시간외</span> ${fmtPrice(ot.price)} <span class="${cls(ot.rate)}">${sign(ot.rate)}${(ot.rate || 0).toFixed(2)}%</span></div>`;
 }
 
 function stockRow(s, judeokSet, naverSet) {
@@ -75,7 +77,7 @@ function stockRow(s, judeokSet, naverSet) {
         <span>${fmtPrice(s.price)}</span>
         <span>${fmtEok(s.tvEok)}억</span>
       </div>
-      ${extLine(s.nxt)}
+      ${extLine(s.nxt)}${otLine(s.ot)}
       ${changeBar(s)}
     </li>`;
 }
@@ -94,7 +96,7 @@ function crossRow(c) {
         ${rate}
       </div>
       <div class="xthemes">${esc(themes)}</div>
-      ${extLine(c.nxt)}
+      ${extLine(c.nxt)}${otLine(c.ot)}
     </li>`;
 }
 
@@ -102,12 +104,12 @@ function crossCards(d) {
   const items = d.crossLeaders || [];
   if (!items.length) return "";
   const out = [];
-  for (let i = 0; i < items.length && i < 12; i += 4) {
-    const part = items.slice(i, i + 4);
+  for (let i = 0; i < items.length && i < 15; i += 5) {
+    const part = items.slice(i, i + 5);
     out.push(`
       <section class="card">
         <header class="card-h">
-          <div class="card-title"><span class="tname">🔀 크로스테마 주도주 ${i / 4 + 1}</span></div>
+          <div class="card-title"><span class="tname">🔀 크로스테마 주도주 ${i / 5 + 1}</span></div>
           <span class="tval">오늘 ${d.crossTotal}종목</span>
         </header>
         <div class="card-stat"><span class="xdesc">여러 테마를 동시에 이끄는 종목 · ${i + 1}~${i + part.length}위</span></div>
