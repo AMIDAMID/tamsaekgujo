@@ -47,11 +47,13 @@ function changeBar(s) {
   return `<div class="bar"${tip}>${range}<span class="bar-fill ${cls(rate)}" style="${pos}"></span></div>`;
 }
 
-// 확장 세션 시세 줄 — 세션에 따라 NXT(보라) / 시간외(주황) 스티커
+// 확장 세션 시세 줄. 실측(2026-07-10): 이 데이터는 NXT 전용 — NXT 미상장 종목엔 값이 없고
+// KRX 시간외단일가는 이 API에 없음. AFTER_MARKET = NXT 애프터마켓 → NXT(보라) 스티커.
+// (혹시 OVER_TIME/SINGLE류 세션값이 오면 시간외(주황)로 표기 — 방어용)
 function extLine(nxt) {
   if (!nxt) return "";
-  const isNxt = /NXT|PRE|MAIN/i.test(nxt.session || "");
-  const tag = isNxt ? '<span class="nxt-tag">NXT</span>' : '<span class="ot-tag">시간외</span>';
+  const isOt = /OVER_?TIME|SINGLE/i.test(nxt.session || "");
+  const tag = isOt ? '<span class="ot-tag">시간외</span>' : '<span class="nxt-tag">NXT</span>';
   return `<div class="stk-nxt">${tag} ${fmtPrice(nxt.price)} <span class="${cls(nxt.rate)}">${sign(nxt.rate)}${(nxt.rate || 0).toFixed(2)}%</span></div>`;
 }
 
@@ -145,13 +147,19 @@ function card(t, i) {
 
 const pad2 = (n) => String(n).padStart(2, "0");
 
-// 장중(평일 09:00~15:35 KST)에만 스테일 경고 대상 — 장 마감 후 데이터 정지는 정상
-function isMarketHoursKST() {
-  const kst = new Date(Date.now() + (new Date().getTimezoneOffset() + 540) * 60000);
+function kstNow() {
+  return new Date(Date.now() + (new Date().getTimezoneOffset() + 540) * 60000);
+}
+function inWindowKST(fromMin, toMin) {
+  const kst = kstNow();
   const day = kst.getDay();                          // 0=일 6=토
   const hm = kst.getHours() * 60 + kst.getMinutes();
-  return day >= 1 && day <= 5 && hm >= 540 && hm <= 935;   // 09:00~15:35
+  return day >= 1 && day <= 5 && hm >= fromMin && hm <= toMin;
 }
+// 장중(평일 09:00~15:35 KST)에만 스테일 경고 대상 — 장 마감 후 데이터 정지는 정상
+const isMarketHoursKST = () => inWindowKST(540, 935);
+// NXT 거래시간대(평일 08:00~20:05) — 이 밖이면 extOpen 데이터가 남아있어도 CLOSE 표기
+const isNxtHoursKST = () => inWindowKST(480, 1205);
 
 function render(d) {
   const meta = document.getElementById("meta");
@@ -162,7 +170,9 @@ function render(d) {
   const errs = d.status && !d.status.ok
     ? ` <span class="stale">⚠ 수집 오류 ${d.status.errors.length}건</span>` : "";
   const hhmmss = `${pad2(upd.getHours())}:${pad2(upd.getMinutes())}:${pad2(upd.getSeconds())}`;
-  meta.innerHTML = `${hhmmss} 기준 · ${esc(d.marketStatus)}${stale}${errs}`;
+  const statusText = d.marketStatus === "OPEN" ? "OPEN"
+    : (d.extOpen && isNxtHoursKST() ? "NXT OPEN" : "CLOSE");
+  meta.innerHTML = `${hhmmss} 기준 · ${esc(statusText)}${stale}${errs}`;
   document.getElementById("cards").innerHTML =
     d.themes.map((t, i) => card(t, i)).join("") + crossCards(d);
 }
