@@ -47,6 +47,14 @@ function changeBar(s) {
   return `<div class="bar"${tip}>${range}<span class="bar-fill ${cls(rate)}" style="${pos}"></span></div>`;
 }
 
+// 확장 세션 시세 줄 — 세션에 따라 NXT(보라) / 시간외(주황) 스티커
+function extLine(nxt) {
+  if (!nxt) return "";
+  const isNxt = /NXT|PRE|MAIN/i.test(nxt.session || "");
+  const tag = isNxt ? '<span class="nxt-tag">NXT</span>' : '<span class="ot-tag">시간외</span>';
+  return `<div class="stk-nxt">${tag} ${fmtPrice(nxt.price)} <span class="${cls(nxt.rate)}">${sign(nxt.rate)}${(nxt.rate || 0).toFixed(2)}%</span></div>`;
+}
+
 function stockRow(s, judeokSet, naverSet) {
   const marks =
     (judeokSet.has(s.code) ? LEAD : "") +
@@ -65,9 +73,46 @@ function stockRow(s, judeokSet, naverSet) {
         <span>${fmtPrice(s.price)}</span>
         <span>${fmtEok(s.tvEok)}억</span>
       </div>
-      ${s.nxt ? `<div class="stk-nxt"><span class="nxt-tag">NXT</span> ${fmtPrice(s.nxt.price)} <span class="${cls(s.nxt.rate)}">${sign(s.nxt.rate)}${(s.nxt.rate || 0).toFixed(2)}%</span></div>` : ""}
+      ${extLine(s.nxt)}
       ${changeBar(s)}
     </li>`;
+}
+
+// 크로스테마 주도주: 네이버 주도주로 여러 테마에 오른 종목 — 맨 끝 카드 3장(4종목씩)
+function crossRow(c) {
+  const url = `https://m.stock.naver.com/domestic/stock/${esc(c.code)}/total`;
+  const rate = c.rate != null
+    ? `<span class="xrate ${cls(c.rate)}">${sign(c.rate)}${c.rate.toFixed(2)}%</span>` : "";
+  const themes = c.themes.slice(0, 4).join(", ") + (c.count > 4 ? " 외" : "");
+  return `
+    <li class="stk">
+      <div class="stk-top">
+        <a class="stk-name" href="${url}" target="_blank" rel="noopener">${esc(c.name)}</a>
+        ${NB}<span class="xcnt">×${c.count}</span>
+        ${rate}
+      </div>
+      <div class="xthemes">${esc(themes)}</div>
+      ${extLine(c.nxt)}
+    </li>`;
+}
+
+function crossCards(d) {
+  const items = d.crossLeaders || [];
+  if (!items.length) return "";
+  const out = [];
+  for (let i = 0; i < items.length && i < 12; i += 4) {
+    const part = items.slice(i, i + 4);
+    out.push(`
+      <section class="card">
+        <header class="card-h">
+          <div class="card-title"><span class="tname">🔀 크로스테마 주도주 ${i / 4 + 1}</span></div>
+          <span class="tval">오늘 ${d.crossTotal}종목</span>
+        </header>
+        <div class="card-stat"><span class="xdesc">여러 테마를 동시에 이끄는 종목 · ${i + 1}~${i + part.length}위</span></div>
+        <ul class="stk-list">${part.map(crossRow).join("")}</ul>
+      </section>`);
+  }
+  return out.join("");
 }
 
 function card(t, i) {
@@ -118,7 +163,8 @@ function render(d) {
     ? ` <span class="stale">⚠ 수집 오류 ${d.status.errors.length}건</span>` : "";
   const hhmmss = `${pad2(upd.getHours())}:${pad2(upd.getMinutes())}:${pad2(upd.getSeconds())}`;
   meta.innerHTML = `${hhmmss} 기준 · ${esc(d.marketStatus)}${stale}${errs}`;
-  document.getElementById("cards").innerHTML = d.themes.map((t, i) => card(t, i)).join("");
+  document.getElementById("cards").innerHTML =
+    d.themes.map((t, i) => card(t, i)).join("") + crossCards(d);
 }
 
 async function load() {
