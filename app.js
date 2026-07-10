@@ -104,10 +104,10 @@ function crossCards(d) {
   const items = d.crossLeaders || [];
   if (!items.length) return "";
   const out = [];
-  for (let i = 0; i < items.length && i < 15; i += 5) {
+  for (let i = 0; i < items.length && i < 20; i += 5) {
     const part = items.slice(i, i + 5);
     out.push(`
-      <section class="card">
+      <section class="card cross">
         <header class="card-h">
           <div class="card-title"><span class="tname">🔀 크로스테마 주도주 ${i / 5 + 1}</span></div>
           <span class="tval">오늘 ${d.crossTotal}종목</span>

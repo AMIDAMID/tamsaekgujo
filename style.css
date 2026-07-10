@@ -40,6 +40,7 @@ main { padding: 12px; }
         overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
 .card-h { display: flex; justify-content: space-between; align-items: center;
           gap: 8px; padding: 8px 10px; background: #00b1a9; color: #fff; }  /* 마켓중심 민트 */
+.card.cross .card-h { background: #03c75a; }  /* 크로스테마 = 네이버 초록 */
 .card-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .rank { background: rgba(255,255,255,.22); border-radius: 5px; padding: 1px 7px;
         font-weight: bold; font-size: 12px; flex: none; }
