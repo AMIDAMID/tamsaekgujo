@@ -128,3 +128,10 @@ footer { color: #8a919b; font-size: 11px; padding: 10px 14px; text-align: center
 .tk-item .xthemes { white-space: nowrap; text-overflow: ellipsis; }
 @keyframes tkScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .tk-track { animation: none; } }
+
+/* 네프콘 테마 나이 배지(D+N) — 특징테마 시리즈에 등장한 지 며칠째인지 */
+.npd { flex: none; background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.6);
+       border-radius: 4px; font-size: 10.5px; font-weight: 800; padding: 0 5px; }
+/* 무테마 급등주 이력 항목(티커) — 회색톤으로 크로스 항목과 구분 */
+.tk-hist .stk-name { color: #6b7280; }
+.tk-hist .xcnt { background: #fde68a; color: #92400e; }

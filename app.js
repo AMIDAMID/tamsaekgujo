@@ -120,6 +120,7 @@ function card(t, i) {
         <div class="card-title">
           <span class="rank">${i + 1}</span>
           <span class="tname">${esc(t.name)}${t.capCount ? ` ${CAP}<span class="capx">×${t.capCount}</span>` : ""}</span>
+          ${t.nepconDays ? `<span class="npd" title="특징테마 등장 ${t.nepconDays}일째">D+${t.nepconDays}</span>` : ""}
           ${aliasBadge}
         </div>
         <span class="tval">${fmtEok(t.tradingValueEok)}억</span>
@@ -152,15 +153,31 @@ const isNxtHoursKST = () => inWindowKST(480, 1205);
 // 헤더 티커: 크로스테마 주도주 전광판 — 카드 행과 동일한 3줄 블록이 왼쪽으로 흐름.
 // 내용이 실제로 바뀔 때만 재구성(60초 갱신 시 애니메이션 튐 방지). 속도는 픽셀 기준 일정.
 let tkSig = "";
+// 무테마 급등주 이력 항목: 급등 중인데 화면에 없는 종목의 과거 특징테마 라벨
+function histRowBody(r) {
+  const url = `https://m.stock.naver.com/domestic/stock/${esc(r.code)}/total`;
+  const d = String(r.lastDate || "");
+  const md = d.length === 8 ? `${+d.slice(4, 6)}/${+d.slice(6, 8)}` : "";
+  return `<div class="stk-top">
+        <a class="stk-name" href="${url}" target="_blank" rel="noopener">${esc(r.name)}</a>
+        <span class="xcnt">이력</span>
+        <span class="xrate ${cls(r.rate)}">${sign(r.rate)}${(r.rate || 0).toFixed(2)}%</span>
+      </div>
+      <div class="xthemes">과거 ${esc(r.theme)}${md ? ` (${md})` : ""} 테마로 등장</div>`;
+}
+
 function renderTicker(d) {
   const box = document.getElementById("xticker");
   if (!box) return;
   const items = d.crossLeaders || [];
-  if (!items.length) { box.classList.add("hidden"); tkSig = ""; return; }
-  const sig = items.map((c) => `${c.code}:${c.rate}:${c.count}`).join("|");
+  const hist = d.nepconRisers || [];
+  if (!items.length && !hist.length) { box.classList.add("hidden"); tkSig = ""; return; }
+  const sig = items.map((c) => `${c.code}:${c.rate}:${c.count}`).join("|")
+    + "#" + hist.map((r) => `${r.code}:${r.rate}`).join("|");
   if (sig === tkSig) { box.classList.remove("hidden"); return; }
   tkSig = sig;
-  const one = items.map((c) => `<span class="tk-item">${crossRowBody(c)}</span>`).join("");
+  const one = items.map((c) => `<span class="tk-item">${crossRowBody(c)}</span>`).join("")
+    + hist.map((r) => `<span class="tk-item tk-hist">${histRowBody(r)}</span>`).join("");
   const track = document.getElementById("tkTrack");
   track.innerHTML = `<span class="tk-copy">${one}</span><span class="tk-copy">${one}</span>`;
   box.classList.remove("hidden");
