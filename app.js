@@ -68,8 +68,7 @@ function stockRow(s, judeokSet, naverSet) {
   const marks =
     (judeokSet.has(s.code) ? LEAD : "") +
     (naverSet.has(s.code) ? NB : "") +
-    (s.isCap ? CAP : "") +
-    ((s.tvEok || 0) >= 1000 ? "💰" : "");
+    (s.isCap ? CAP : "");
   const url = `https://m.stock.naver.com/domestic/stock/${esc(s.code)}/total`;
   return `
     <li class="stk${s.isCap ? " cap" : ""}">
