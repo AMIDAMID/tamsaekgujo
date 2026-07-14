@@ -136,3 +136,13 @@ footer { color: #8a919b; font-size: 11px; padding: 10px 14px; text-align: center
 /* 무테마 급등주 이력 항목(티커) — 회색톤으로 크로스 항목과 구분 */
 .tk-hist .stk-name { color: #6b7280; }
 .tk-hist .xcnt { background: #fde68a; color: #92400e; }
+
+/* 뉴스 급등 개별이슈(티커) — 지나치기 쉬워 반짝(글로우 펄스)으로 시선 유도 */
+.tk-news .stk-name { color: #b91c1c; font-weight: 800; }
+.tk-news .xcnt { background: #ff5722; color: #fff;
+                 animation: newsFlash 1.1s ease-in-out infinite; }
+@keyframes newsFlash {
+  0%, 100% { box-shadow: 0 0 2px 0 rgba(255,120,40,.55); }
+  50%      { box-shadow: 0 0 10px 2px rgba(255,180,60,1); }
+}
+@media (prefers-reduced-motion: reduce) { .tk-news .xcnt { animation: none; } }

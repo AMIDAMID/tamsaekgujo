@@ -177,9 +177,10 @@ function indivRowBody(r) {
   const label = r.catalyst
     ? `뉴스 급등: ${esc(r.catalyst)}`
     : `${r.theme ? esc(r.theme) + " · " : ""}개별 급등`;
+  const badge = r.catalyst ? "⚡뉴스" : "개별";
   return `<div class="stk-top">
         <a class="stk-name" href="${url}" target="_blank" rel="noopener">${esc(r.name)}</a>
-        <span class="xcnt">개별</span>
+        <span class="xcnt">${badge}</span>
         <span class="xrate ${cls(r.rate)}">${sign(r.rate)}${(r.rate || 0).toFixed(2)}%</span>
       </div>
       <div class="xthemes">${label}</div>`;
@@ -198,7 +199,7 @@ function renderTicker(d) {
   if (sig === tkSig) { box.classList.remove("hidden"); return; }
   tkSig = sig;
   const one = items.map((c) => `<span class="tk-item">${crossRowBody(c)}</span>`).join("")
-    + indiv.map((r) => `<span class="tk-item tk-hist">${indivRowBody(r)}</span>`).join("")
+    + indiv.map((r) => `<span class="tk-item tk-hist${r.catalyst ? " tk-news" : ""}">${indivRowBody(r)}</span>`).join("")
     + hist.map((r) => `<span class="tk-item tk-hist">${histRowBody(r)}</span>`).join("");
   const track = document.getElementById("tkTrack");
   track.innerHTML = `<span class="tk-copy">${one}</span><span class="tk-copy">${one}</span>`;
