@@ -15,7 +15,12 @@ function dataUrl() {
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
   ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
-const fmtEok = (v) => v == null ? "-" : Math.round(v).toLocaleString("ko-KR");
+// 억 단위 값 표기: 1조(=10000억) 이상은 'N.N조'로 축약(가독성). 단위 포함 반환.
+const fmtEok = (v) => {
+  if (v == null) return "-";
+  if (v >= 10000) return (v / 10000).toFixed(1).replace(/\.0$/, "") + "조";
+  return Math.round(v).toLocaleString("ko-KR") + "억";
+};
 const fmtPrice = (v) => v == null ? "-" : v.toLocaleString("ko-KR");
 const sign = (v) => (v > 0 ? "+" : "");
 const cls = (v) => (v > 0 ? "up" : v < 0 ? "down" : "flat");
@@ -75,7 +80,7 @@ function stockRow(s, judeokSet, naverSet) {
       </div>
       <div class="stk-sub">
         <span>${fmtPrice(s.price)}</span>
-        <span>${fmtEok(s.tvEok)}억</span>
+        <span>${fmtEok(s.tvEok)}</span>
       </div>
       ${extLine(s.nxt)}${otLine(s.ot)}
       ${changeBar(s)}
@@ -123,7 +128,7 @@ function card(t, i) {
           ${t.nepconDays ? `<span class="npd" title="특징테마 등장 ${t.nepconDays}일째">D+${t.nepconDays}</span>` : ""}
           ${aliasBadge}
         </div>
-        <span class="tval">${fmtEok(t.tradingValueEok)}억</span>
+        <span class="tval">${fmtEok(t.tradingValueEok)}</span>
       </header>
       <div class="card-stat">
         <span class="score">${t.score.toFixed(1)}점</span>
@@ -166,15 +171,18 @@ function histRowBody(r) {
       <div class="xthemes">과거 ${esc(r.theme)}${md ? ` (${md})` : ""} 테마로 등장</div>`;
 }
 
-// 개별 급등: 저유동 테마 카드에서 살린 강한 종목(카드로도 표시되지만 전광판에도 노출)
+// 개별 급등: (a) 저유동 카드에서 살린 강한 종목, (b) 뉴스로 혼자 뛴 개별이슈(촉매 표시)
 function indivRowBody(r) {
   const url = `https://m.stock.naver.com/domestic/stock/${esc(r.code)}/total`;
+  const label = r.catalyst
+    ? `뉴스 급등: ${esc(r.catalyst)}`
+    : `${r.theme ? esc(r.theme) + " · " : ""}개별 급등`;
   return `<div class="stk-top">
         <a class="stk-name" href="${url}" target="_blank" rel="noopener">${esc(r.name)}</a>
         <span class="xcnt">개별</span>
         <span class="xrate ${cls(r.rate)}">${sign(r.rate)}${(r.rate || 0).toFixed(2)}%</span>
       </div>
-      <div class="xthemes">${r.theme ? esc(r.theme) + " · " : ""}개별 급등</div>`;
+      <div class="xthemes">${label}</div>`;
 }
 
 function renderTicker(d) {
